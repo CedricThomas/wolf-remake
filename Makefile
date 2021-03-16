@@ -9,8 +9,6 @@ SRC 		:=	$(shell find $(SRC_DIR) -name '*.c')
 
 OBJECTS		:=	$(addprefix $(BUILD_DIR),$(SRC:$(SRC_DIR)%.c=%.o))
 
-STRUCTURE	:=	$(shell find $(SRC_DIR) -type d) 
-
 BINARY		:=	wolf
 
 CFLAGS		:=	-Wall -g
