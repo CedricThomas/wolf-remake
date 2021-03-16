@@ -13,7 +13,7 @@ BINARY		:=	wolf
 
 CFLAGS		:=	-Wall -g
 
-LDFLAGS		:=	-lm -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
+LDFLAGS		:=	-lcsfml-graphics -lcsfml-window -lcsfml-audio
 
 all: $(BINARY)
 
@@ -22,7 +22,7 @@ $(BUILD_DIR)%.o: $(SRC_DIR)%.c
 	gcc $(CFLAGS) $(LDFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
 $(BINARY): $(OBJECTS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $(BINARY)
+	gcc $(OBJECTS)  $(CFLAGS) $(LDFLAGS) -o $(BINARY)
 
 clean:
 	rm -rf $(OBJECTS)
