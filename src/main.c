@@ -3,14 +3,26 @@
 #include <stdio.h>
 #include "wolf.h"
 
+void draw(framebuffer_t *buffer) {
+    framebuffer_draw_pixel(buffer, WIDTH / 2, HEIGHT / 2, sfRed);
+}
+
 int sfml_hello() {
-    sfVideoMode mode = {800, 600, 32};
-    sfRenderWindow* window;
     sfEvent event;
 
     /* Create the main window */
-    window = sfRenderWindow_create(mode, "SFML window", sfResize | sfClose, NULL);
+    sfRenderWindow *window = window_create("wolf", WIDTH, HEIGHT);
     if (!window)
+        return 1;
+
+    /* Create image used to display the framebuffer */
+    image_t *framebuffer_image = image_create(WIDTH, HEIGHT);
+    if (!framebuffer_image)
+        return 1;
+    
+    /* Create the framebuffer */
+    framebuffer_t *framebuffer = framebuffer_create(WIDTH, HEIGHT);
+    if (!framebuffer)
         return 1;
 
     /* Start the game loop */
@@ -27,6 +39,11 @@ int sfml_hello() {
         /* Clear the screen */
         sfRenderWindow_clear(window, sfBlack);
 
+        /* Draw the game */
+        draw(framebuffer);
+        image_update_from_framebuffer(framebuffer_image, framebuffer);
+        display_image_on_window(window, framebuffer_image);
+        
         /* Update the window */
         sfRenderWindow_display(window);
     }
@@ -38,13 +55,5 @@ int sfml_hello() {
 }
 
 int main(int argc, char **argv) {
-    wolf_t map;
-    int error;
-
-    error = parse(argc, argv, &map);
-    if (error != 0) {
-        dprintf(2, "Can't parse the game map");
-        return error;
-    }
     return sfml_hello();
 }
