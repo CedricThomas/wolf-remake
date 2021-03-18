@@ -1,5 +1,6 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "wolf.h"
 
 image_t *image_create(double width, double height) {

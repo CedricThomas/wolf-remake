@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include "wolf.h"
 
 framebuffer_t *framebuffer_create(int width, int height) {
@@ -8,8 +9,8 @@ framebuffer_t *framebuffer_create(int width, int height) {
     buffer->pixels = malloc(width * height * 4 * sizeof(sfUint8));
     if (buffer->pixels == NULL)
         return NULL;
-    for (int i = 0; i < (width * height * 4); i ++) {
-      buffer->pixels[i] = 0;
+    for (int i = 0; i < (width * height * 4); i++) {
+        buffer->pixels[i] = 0;
     }
     buffer->height = height;
     buffer->width = width;

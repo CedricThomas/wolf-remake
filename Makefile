@@ -13,7 +13,7 @@ BINARY		:=	wolf
 
 CFLAGS		:=	-Wall -g
 
-LDFLAGS		:=	-lcsfml-graphics -lcsfml-window -lcsfml-audio
+LDFLAGS		:=	-lm -lcsfml-graphics -lcsfml-window -lcsfml-audio
 
 all: $(BINARY)
 

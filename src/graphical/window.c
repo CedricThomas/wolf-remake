@@ -1,4 +1,4 @@
-# include <SFML/Graphics.h>
+#include <SFML/Graphics.h>
 
 sfRenderWindow *window_create(char *name, int width, int height) {
     sfVideoMode mode;
