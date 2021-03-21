@@ -22,7 +22,7 @@ void framebuffer_free(framebuffer_t *buffer) {
     free(buffer);
 }
 
-void clean_buff(framebuffer_t *buff) {
+void framebuffer_clear(framebuffer_t *buff) {
     for (int i = 0; i < (buff->width * buff->height * 4); i++) {
         buff->pixels[i] = 0;
     }

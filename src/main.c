@@ -4,19 +4,36 @@
 
 #include "wolf.h"
 
-void draw(framebuffer_t *buffer) {
-    framebuffer_draw_pixel(buffer, (sfVector2i){WIDTH / 5, HEIGHT / 2}, sfRed);
-    framebuffer_draw_rectangle(buffer, (sfVector2i){2 * WIDTH / 5, HEIGHT / 2}, (sfVector2i){10, 10}, sfGreen);
-    framebuffer_draw_line(buffer, (sfVector2i){3 * WIDTH / 5, HEIGHT / 2}, (sfVector2i){3 * WIDTH / 5, HEIGHT / 3}, sfBlue);
-    framebuffer_draw_circle(buffer, (sfVector2i){4 * WIDTH / 5, HEIGHT / 2}, 30, color_new(255, 100, 100, 255));
+void draw(game_state_t *state, framebuffer_t *buffer) {
+    draw_simulation(
+        state,
+        buffer,
+        (sfVector2i){
+            10,
+            10
+        }, (sfVector2i){
+            500,
+            500
+        });
 }
 
-int sfml_hello() {
+void update(game_state_t *state, sfEvent *event) {
+    update_simulation(state, event);
+}
+
+int run() {
     sfEvent event;
+
+    time_tracker_t update_tracker = time_tracker_create(100);
 
     /* Create the main window */
     sfRenderWindow *window = window_create("wolf", WIDTH, HEIGHT);
     if (!window)
+        return 1;
+
+    /* Create image used to display the framebuffer */
+    game_state_t *state = game_state_create(NULL);
+    if (!state)
         return 1;
 
     /* Create image used to display the framebuffer */
@@ -40,9 +57,14 @@ int sfml_hello() {
 
         /* Clear the screen */
         sfRenderWindow_clear(window, sfBlack);
+        framebuffer_clear(framebuffer);
+
+        /* Update the game only when the time tracker is updatable*/
+        if (time_tracker_update(&update_tracker))
+            update(state, &event);
 
         /* Draw the game */
-        draw(framebuffer);
+        draw(state, framebuffer);
         image_update_from_framebuffer(framebuffer_image, framebuffer);
         display_image_on_window(window, framebuffer_image);
 
@@ -57,5 +79,5 @@ int sfml_hello() {
 }
 
 int main(int argc, char **argv) {
-    return sfml_hello();
+    return run();
 }
