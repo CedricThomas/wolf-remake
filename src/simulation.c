@@ -1,40 +1,12 @@
 #include "wolf.h"
 
-static const char *map[] = {
-    "1111111111111111111",
-    "1000000000000000001",
-    "1000000000000000001",
-    "1000000000000000001",
-    "1011111111111111101",
-    "1010000000000000101",
-    "1010000000000000101",
-    "1010000000000000101",
-    "1010000000000000101",
-    "1010000000000000101",
-    "1010000000000000101",
-    "1010000000000000101",
-    "1011111110111111101",
-    "1000000000000000001",
-    "1000000000000000001",
-    "1000000000000000001",
-    "1111111111111111111",
-    NULL};
-
 void draw_simulation(game_state_t *state, framebuffer_t *buffer, sfVector2i position, sfVector2i size) {
-    int width = 0;
-    int height = 0;
+    double bloc_height = (double)size.y / (double)state->map->size.y;
+    double bloc_width = (double)size.x / (double)state->map->size.x;
 
-    for (; map[height]; height++)
-        ;
-    for (; map[0][width]; width++)
-        ;
-
-    int bloc_height = size.y / height;
-    int bloc_width = size.x / width;
-
-    for (int y = 0; map[y]; y++) {
-        for (int x = 0; map[y][x]; x++) {
-            if (map[y][x] == '1') {
+    for (int y = 0; state->map->map[y]; y++) {
+        for (int x = 0; state->map->map[y][x]; x++) {
+            if (state->map->map[y][x] == '1') {
                 framebuffer_draw_rectangle(
                     buffer,
                     (sfVector2i){
@@ -56,24 +28,27 @@ void draw_simulation(game_state_t *state, framebuffer_t *buffer, sfVector2i posi
             }
         }
     }
-    // calculate percentage of full map
-    sfVector2i real_position = (sfVector2i){
-        position.x +  (double)(state->player->position.x) / (double)(CHUNK_SIZE * width) * size.x,
-        position.y +  (double)(state->player->position.y) / (double)(CHUNK_SIZE * height) * size.y};
-    framebuffer_draw_circle(buffer, real_position, bloc_width / 4, sfRed);
+    for (int i = 0; state->map->entities[i].type; i++) {
+        entity_t entity = state->map->entities[i];
+        // calculate percentage of full map
+        sfVector2i real_position = (sfVector2i){
+            position.x +  (double)(entity.hitbox.x) / (double)(CHUNK_SIZE * state->map->size.x) * size.x,
+            position.y +  (double)(entity.hitbox.y) / (double)(CHUNK_SIZE * state->map->size.y) * size.y};
+        framebuffer_draw_circle(buffer, real_position, (double)(entity.hitbox.horizontal_radius) / (double)(CHUNK_SIZE * state->map->size.x) * size.x , sfRed);
+    }
 }
 
 void update_simulation(game_state_t *state, sfEvent *event) {
     if (sfKeyboard_isKeyPressed(sfKeyZ))
-        state->player->position.y -= 1;
+        entity_try_move(state->player, state->map, (sfVector2i){0, -5});
     if (sfKeyboard_isKeyPressed(sfKeyQ))
-        state->player->position.x -= 1;
+        entity_try_move(state->player, state->map, (sfVector2i){-5, 0});
     if (sfKeyboard_isKeyPressed(sfKeyS))
-        state->player->position.y += 1;
+        entity_try_move(state->player, state->map, (sfVector2i){0, 5});
     if (sfKeyboard_isKeyPressed(sfKeyD))
-        state->player->position.x += 1;
+        entity_try_move(state->player, state->map, (sfVector2i){5, 0});
     if (sfKeyboard_isKeyPressed(sfKeyE))
-        state->player->look += 1;
+        entity_rotate(state->player, 1);
     if (sfKeyboard_isKeyPressed(sfKeyA))
-        state->player->look -= 1;
+        entity_rotate(state->player, -1);
 }

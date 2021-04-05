@@ -2,7 +2,7 @@
 
 #include "wolf.h"
 
-sfVector2f vector2f_new(double x, double y) {
+sfVector2f vector2f_create(double x, double y) {
     sfVector2f vec;
     vec.x = x;
     vec.y = y;
@@ -13,7 +13,7 @@ float vector2f_norm(sfVector2f vec) {
     return sqrt(pow(vec.x, 2) + pow(vec.y, 2));
 }
 
-sfVector3f vector3f_new(double x, double y, double z) {
+sfVector3f vector3f_create(double x, double y, double z) {
     sfVector3f vec;
     vec.x = x;
     vec.y = y;
@@ -21,7 +21,7 @@ sfVector3f vector3f_new(double x, double y, double z) {
     return vec;
 }
 
-sfVector2i vector2i_new(int x, int y) {
+sfVector2i vector2i_create(int x, int y) {
     sfVector2i vec;
     vec.x = x;
     vec.y = y;

@@ -1,7 +1,7 @@
 # pragma once
 
 # include "graphical.h"
-# include "math.h"
+# include "geometry.h"
 # include "game.h"
 
 // tool.c
