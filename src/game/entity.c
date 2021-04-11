@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "wolf.h"
 
@@ -21,7 +22,7 @@ entity_t entity_create(entity_type_e type, sfVector2i real_position, unsigned in
     memset(&entity, 0, sizeof(entity_t));
     char *occurence = strchr(ENTITIES_AVAILABLES, type);
     int entity_model_idx = (int)(occurence - ENTITIES_AVAILABLES);
-    // TODO test is valid
+    // TODO test is idx valid
     entity.id = id;
     entity.hitbox = ENTITIES_MODELS[entity_model_idx].hitbox;
     entity.look = ENTITIES_MODELS[entity_model_idx].look;
@@ -87,10 +88,9 @@ void entity_try_move(entity_t *entity, map_t *map, sfVector2i real_delta) {
     entity->hitbox.y = new_real_position.y;
 }
 
-void entity_rotate(entity_t *entity, float delta) {
+void entity_rotate(entity_t *entity, double delta) {
     if (!entity)
         return;
-    
     entity->look += delta;
 }
 

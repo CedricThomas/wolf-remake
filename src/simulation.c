@@ -1,5 +1,38 @@
 #include "wolf.h"
 
+void draw_look(game_state_t *state, framebuffer_t *buffer, sfVector2i position, sfVector2i size) {
+    map_t *map = state->map;
+    hitbox_t hitbox = state->player->hitbox;
+    double look = state->player->look - (double)FOV / 2;
+    double incr = (double)FOV / (double)WIDTH;
+
+    for (int i = 0; i < WIDTH; i++) {
+        raycast_t cast = raycast(map, (sfVector2i){hitbox.x, hitbox.y}, look);
+        if (!cast.out) {
+            double bloc_height = (double)size.y / (double)state->map->size.y;
+            double bloc_width = (double)size.x / (double)state->map->size.x;
+            framebuffer_draw_rectangle(
+                buffer,
+                (sfVector2i){
+                position.x + cast.impact.x * bloc_width + 1,
+                position.y + cast.impact.y * bloc_height + 1},
+                        (sfVector2i){
+                            bloc_width - 2,
+                            bloc_height - 2},
+                        sfGreen);
+            sfVector2i real_position = (sfVector2i){
+            position.x +  (double)(hitbox.x) / (double)(CHUNK_SIZE * state->map->size.x) * size.x,
+            position.y +  (double)(hitbox.y) / (double)(CHUNK_SIZE * state->map->size.y) * size.y};
+            sfVector2i ray_impact = (sfVector2i){
+                real_position.x + cosd(look) * (cast.distance / (double)(CHUNK_SIZE * state->map->size.x) * size.x),
+                real_position.y - sind(look) * (cast.distance / (double)(CHUNK_SIZE * state->map->size.y) * size.y)
+            };
+            framebuffer_draw_line(buffer, real_position, ray_impact, sfGreen);
+        }
+        look += incr;
+    }
+}
+
 void draw_simulation(game_state_t *state, framebuffer_t *buffer, sfVector2i position, sfVector2i size) {
     double bloc_height = (double)size.y / (double)state->map->size.y;
     double bloc_width = (double)size.x / (double)state->map->size.x;
@@ -36,6 +69,7 @@ void draw_simulation(game_state_t *state, framebuffer_t *buffer, sfVector2i posi
             position.y +  (double)(entity.hitbox.y) / (double)(CHUNK_SIZE * state->map->size.y) * size.y};
         framebuffer_draw_circle(buffer, real_position, (double)(entity.hitbox.horizontal_radius) / (double)(CHUNK_SIZE * state->map->size.x) * size.x , sfRed);
     }
+    draw_look(state, buffer, position, size);
 }
 
 void update_simulation(game_state_t *state, sfEvent *event) {
@@ -48,7 +82,7 @@ void update_simulation(game_state_t *state, sfEvent *event) {
     if (sfKeyboard_isKeyPressed(sfKeyD))
         entity_try_move(state->player, state->map, (sfVector2i){5, 0});
     if (sfKeyboard_isKeyPressed(sfKeyE))
-        entity_rotate(state->player, 1);
+        entity_rotate(state->player, 5);
     if (sfKeyboard_isKeyPressed(sfKeyA))
-        entity_rotate(state->player, -1);
+        entity_rotate(state->player, -5);
 }

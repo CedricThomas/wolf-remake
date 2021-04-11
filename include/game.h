@@ -16,7 +16,7 @@ typedef enum {
 typedef struct {
     unsigned int id;
     hitbox_t hitbox;
-    float look;
+    double look;
     entity_type_e type;
 } entity_t;
 
@@ -55,7 +55,7 @@ int time_tracker_update(time_tracker_t *tracker);
 entity_t entity_create(entity_type_e type, sfVector2i new_real_position, unsigned int id);
 int entity_is_valid_type(entity_type_e type);
 void entity_try_move(entity_t *entity, map_t *map, sfVector2i real_delta);
-void entity_rotate(entity_t *entity, float delta);
+void entity_rotate(entity_t *entity, double delta);
 sfVector2i entity_get_map_position(entity_t *entity);
 
 // map.c
@@ -63,3 +63,6 @@ map_t *map_create_from_file(char *path);
 int is_in_map_raw(map_t *map, sfVector2i position);
 int is_in_map_real(map_t *map, sfVector2i real_position);
 void map_free(map_t *map);
+
+// raycast.c
+raycast_t raycast(map_t *map, sfVector2i position, double angle);

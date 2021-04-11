@@ -9,11 +9,11 @@ void draw(game_state_t *state, framebuffer_t *buffer) {
         state,
         buffer,
         (sfVector2i){
-            50,
-            50
+            0,
+            0
         }, (sfVector2i){
-            1000,
-            1000
+            300,
+            300
         });
 }
 

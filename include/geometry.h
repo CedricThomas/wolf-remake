@@ -8,11 +8,6 @@
 /* MATH */
 
 typedef enum {
-    SOLID,
-    SOFT
-} impact_type_e;
-
-typedef enum {
     UP,
     LEFT,
     DOWN,
@@ -20,11 +15,11 @@ typedef enum {
 } direction_e;
 
 typedef struct {
-    unsigned int distance;
+    double distance;
     direction_e direction;
     sfVector2i origin;
     sfVector2i impact;
-    sfVector2i subimpact;
+    int out;
 } raycast_t;
 
 typedef struct {
@@ -44,3 +39,8 @@ sfVector2i vector2i_create(int x, int y);
 hitbox_t hitbox_create(int x, int y, int horizontal_radius, int vertical_radius);
 hitbox_t hitbox_create_from_map_position(sfVector2i position);
 int hitbox_overlap(hitbox_t *a, hitbox_t *b);
+
+// trigo.c
+double cosd(double angle);
+double sind(double angle);
+double tand(double angle);
