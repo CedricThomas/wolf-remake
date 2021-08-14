@@ -5,6 +5,9 @@
 #include "wolf.h"
 
 void draw(game_state_t *state, framebuffer_t *buffer) {
+    draw_game(
+        state,
+        buffer);
     draw_simulation(
         state,
         buffer,
@@ -12,13 +15,13 @@ void draw(game_state_t *state, framebuffer_t *buffer) {
             0,
             0
         }, (sfVector2i){
-            300,
-            300
+            500,
+            500
         });
 }
 
 void update(game_state_t *state, sfEvent *event) {
-    update_simulation(state, event);
+    update_game(state, event);
 }
 
 int run() {

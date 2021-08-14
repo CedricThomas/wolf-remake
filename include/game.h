@@ -40,8 +40,11 @@ typedef struct {
 } game_state_t;
 
 // simulation.c
-void draw_simulation(game_state_t *state, framebuffer_t *buffer, sfVector2i position, sfVector2i size);
-void update_simulation(game_state_t *game_state, sfEvent *event);
+void draw_simulation(game_state_t *game_state, framebuffer_t *buffer, sfVector2i position, sfVector2i size);
+
+// game.c
+void draw_game(game_state_t *game_state, framebuffer_t *buffer);
+void update_game(game_state_t *game_state, sfEvent *event);
 
 // game_state.c
 game_state_t *game_state_create(char *map_path);
