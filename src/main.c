@@ -4,13 +4,10 @@
 
 #include "wolf.h"
 
-void draw(game_state_t *state, framebuffer_t *buffer) {
-    draw_game(
-        state,
-        buffer);
+void draw(game_state_t *state) {
+    draw_game(state);
     draw_simulation(
         state,
-        buffer,
         (sfVector2i){
             0,
             0
@@ -35,11 +32,6 @@ int run() {
         return 1;
 
     /* Create image used to display the framebuffer */
-    game_state_t *state = game_state_create(NULL);
-    if (!state)
-        return 1;
-
-    /* Create image used to display the framebuffer */
     image_t *framebuffer_image = image_create(WIDTH, HEIGHT);
     if (!framebuffer_image)
         return 1;
@@ -48,6 +40,12 @@ int run() {
     framebuffer_t *framebuffer = framebuffer_create(WIDTH, HEIGHT);
     if (!framebuffer)
         return 1;
+
+    /* Create state used to store game data */
+    game_state_t *state = game_state_create(NULL);
+    if (!state)
+        return 1;
+    state->context->buffer = framebuffer;
 
     /* Start the game loop */
     while (sfRenderWindow_isOpen(window)) {
@@ -67,7 +65,7 @@ int run() {
             update(state, &event);
 
         /* Draw the game */
-        draw(state, framebuffer);
+        draw(state);
         image_update_from_framebuffer(framebuffer_image, framebuffer);
         display_image_on_window(window, framebuffer_image);
 

@@ -11,6 +11,9 @@ game_state_t *game_state_create(char *map_path) {
     state->map = map_create_from_file(map_path);
     if (state->map == NULL)
         return NULL;
+    state->context = rendering_context_create();
+    if (state->context == NULL)
+        return NULL;
     for (int i = 0; state->map->entities[i].type != 0; i++)
         if (state->map->entities[i].type == PLAYER)
             state->player = &state->map->entities[i];
@@ -18,5 +21,7 @@ game_state_t *game_state_create(char *map_path) {
 }
 
 void game_state_free(game_state_t *state) {
+    rendering_context_free(state->context);
+    map_free(state->map);
     free(state);
 }

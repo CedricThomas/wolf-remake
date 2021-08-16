@@ -31,19 +31,28 @@ typedef struct {
     unsigned long interval;
 } time_tracker_t;
 
+typedef struct {
+    framebuffer_t *buffer;
+    raycast_t hits_history[2];
+    double look;
+    double look_incr;
+    int stripe_idx;
+} rendering_context_t;
+
 // we load map of premade chunks
 // The real map dimensions are:
 // (number of chunks in width * chunk_size) x (number of chunks in height * chunk_size)
 typedef struct {
     map_t *map;
     entity_t *player;
+    rendering_context_t *context;
 } game_state_t;
 
 // simulation.c
-void draw_simulation(game_state_t *game_state, framebuffer_t *buffer, sfVector2i position, sfVector2i size);
+void draw_simulation(game_state_t *game_state, sfVector2i position, sfVector2i size);
 
 // game.c
-void draw_game(game_state_t *game_state, framebuffer_t *buffer);
+void draw_game(game_state_t *game_state);
 void update_game(game_state_t *game_state, sfEvent *event);
 
 // game_state.c
@@ -69,3 +78,7 @@ void map_free(map_t *map);
 
 // raycast.c
 raycast_t raycast(map_t *map, sfVector2i position, double angle);
+
+// rendering_context.c
+rendering_context_t *rendering_context_create();
+void rendering_context_free(rendering_context_t *rendering_context);

@@ -37,9 +37,10 @@ void draw_look(game_state_t *state, framebuffer_t *buffer, sfVector2i position, 
     }
 }
 
-void draw_simulation(game_state_t *state, framebuffer_t *buffer, sfVector2i position, sfVector2i size) {
+void draw_simulation(game_state_t *state, sfVector2i position, sfVector2i size) {
     int bloc_height = (int)size.y / (int)state->map->size.y;
     int bloc_width = (int)size.x / (int)state->map->size.x;
+    framebuffer_t *buffer = state->context->buffer;
     size = (sfVector2i){
         state->map->size.x * bloc_width,
         state->map->size.y * bloc_height

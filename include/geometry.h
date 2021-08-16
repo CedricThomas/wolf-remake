@@ -8,6 +8,7 @@
 /* MATH */
 
 typedef enum {
+    NONE,
     UP,
     LEFT,
     DOWN,
@@ -44,3 +45,5 @@ int hitbox_overlap(hitbox_t *a, hitbox_t *b);
 double cosd(double angle);
 double sind(double angle);
 double tand(double angle);
+double rad(double angle);
+double degree(double angle);
